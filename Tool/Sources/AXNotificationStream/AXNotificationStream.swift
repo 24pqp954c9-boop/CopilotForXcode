@@ -163,7 +163,12 @@ public final class AXNotificationStream: AsyncSequence {
                             )
                     }
                 }
-                try await Task.sleep(nanoseconds: 1_500_000_000)
+                // Task.sleep only throws on cancellation; stop retrying in that case.
+                do {
+                    try await Task.sleep(nanoseconds: 1_500_000_000)
+                } catch {
+                    return
+                }
             }
         }
     }

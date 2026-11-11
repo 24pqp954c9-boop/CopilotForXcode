@@ -193,8 +193,12 @@ func launchHostAppWithArgs(args: [String]?) throws {
         }
         configuration.activates = true
         
-        try await NSWorkspace.shared
-            .openApplication(at: appURL, configuration: configuration)
+        do {
+            try await NSWorkspace.shared
+                .openApplication(at: appURL, configuration: configuration)
+        } catch {
+            Logger.ui.error("Failed to launch \(hostAppName()): \(error.localizedDescription)")
+        }
     }
 }
 
