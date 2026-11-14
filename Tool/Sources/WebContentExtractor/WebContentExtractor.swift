@@ -190,7 +190,7 @@ public class WebContentFetcher: NSObject, WKNavigationDelegate {
     public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         loadingTimer?.invalidate()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + Config.contentLoadDelay) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + Config.contentLoadDelay) { [weak self] in
             webView.evaluateJavaScript("document.body.innerHTML") { [weak self] result, error in
                 DispatchQueue.main.async {
                     if let error = error {
